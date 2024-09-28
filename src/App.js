@@ -7,9 +7,13 @@ import InfoUser from "./components/InfoUser";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => (
-  <BrowserRouter>
+  <>
+    <ToastContainer position="bottom-right" />
+    <BrowserRouter>
     <Box sx={{ backgroundColor: '#000' }}>
       <Navbar />
       <Routes>
@@ -26,6 +30,8 @@ const App = () => (
       <Footer />
     </Box>
   </BrowserRouter>
+  </>
+ 
 );
 
 export default App;
