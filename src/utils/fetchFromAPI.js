@@ -43,6 +43,15 @@ export const registerAPI = async (payload) => {
 
 export const loginAPI = async (payload) => {
   console.log("get payload: ", payload)
-  const {data} = await axios.post(`${BASE_URL}/auth/login`, payload);
+  const {data} = await axios.post(`${BASE_URL}/auth/login`, payload, {
+    withCredentials: true  // Cho phép gửi và nhận cookie từ server
+  });
   return data;
 }
+
+export const loginFacebookAPI = async (newData) => {
+
+  const { data } = await axios.post(`${BASE_URL}/auth/login-face`, newData, options);
+
+  return data;
+};

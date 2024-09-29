@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, CardMedia } from "@mui/material";
 
 import { Videos, ChannelCard } from ".";
-import { loginAPI } from "../utils/fetchFromAPI";
+import { loginAPI, loginFacebookAPI } from "../utils/fetchFromAPI";
 import {toast} from 'react-toastify';
 import ReactFacebookLogin from "react-facebook-login";
 
@@ -56,8 +56,23 @@ const Login = () => {
           <ReactFacebookLogin 
             appId="471124579242343"
             fields="name,email,picture"
-            callback={()=> {
-
+            callback={(response)=> {
+              // console.log("get response: ", response)
+              let {id, name, email} = response;
+              let newData = {
+                face_app_id: id,
+                full_name: name,
+                email
+              }
+              loginFacebookAPI(newData)
+              .then((result) => {
+                toast.success(result.message);
+                localStorage.setItem("LOGIN_USER", result.data);
+                navigate("/")
+              })
+              .catch((error) => {
+                toast.error(error.response.data.message)
+              })
             }}
           />
          
