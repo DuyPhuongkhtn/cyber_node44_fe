@@ -101,6 +101,14 @@ export const loginAPI = async (payload) => {
   return data;
 }
 
+export const loginAsyncKeyAPI = async (payload) => {
+  console.log("get payload: ", payload)
+  const {data} = await axiosInstance.post(`${BASE_URL}/auth/login-async-key`, payload, {
+    withCredentials: true //cho phép gửi và nhận cookie từ server (BE)
+  });
+  return data;
+}
+
 export const loginFacebookAPI = async (newUser) => {
   const {data} = await axiosInstance.post(`${BASE_URL}/auth/login-face`, newUser);
   return data;

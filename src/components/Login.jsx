@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, CardMedia } from "@mui/material";
 
 import { Videos, ChannelCard } from ".";
-import { loginAPI, loginFacebookAPI } from "../utils/fetchFromAPI";
+import { loginAPI, loginAsyncKeyAPI, loginFacebookAPI } from "../utils/fetchFromAPI";
 import {toast} from 'react-toastify';
 import ReactFacebookLogin from "react-facebook-login";
 
@@ -35,7 +35,7 @@ const Login = () => {
             let email = document.getElementById("email").value;
             let pass_word = document.getElementById("pass").value;
             console.log(`email: ${email}; pass_word: ${pass_word}`);
-            loginAPI({email, pass_word})
+            loginAsyncKeyAPI({email, pass_word})
             .then((result) => {
               // result gồm message và data (access token)
               // tạo pop up thông báo login thành công
