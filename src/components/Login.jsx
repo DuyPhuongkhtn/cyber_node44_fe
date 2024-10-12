@@ -37,9 +37,10 @@ const Login = () => {
             console.log(`email: ${email}; pass_word: ${pass_word}`);
             loginAPI({email, pass_word})
             .then((result) => {
+              console.log(result)
               // result gồm message và data (access token)
               // tạo pop up thông báo login thành công
-              toast.success(result.message);
+              toast.success(result);
 
               // lưu access token trong local storage của browser
               localStorage.setItem("LOGIN_USER", result.data);
@@ -48,11 +49,15 @@ const Login = () => {
               navigate("/");
             })
             .catch((error) => {
-              console.log("error from API login");
-              toast.error(error.response.data.message);
+              console.log("error from API login: ", error);
+              toast.error(error);
+              // navigate("/login")
             })
           }}
           >Login</button>
+          <a href="#" className=" text-primary" onClick={()=>navigate("/forget")}>
+            Forget password
+          </a>
           <ReactFacebookLogin 
             appId="1051745616609877"
             fields="name,email,picture"
