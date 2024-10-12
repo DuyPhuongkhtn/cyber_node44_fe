@@ -113,3 +113,8 @@ export const loginFacebookAPI = async (newUser) => {
   const {data} = await axiosInstance.post(`${BASE_URL}/auth/login-face`, newUser);
   return data;
 }
+
+export const forgotPassAPI = async (email) => {
+  const {data} = await axiosInstance.post(`${BASE_URL}/auth/forgot-password`, email);
+  return data;
+}
