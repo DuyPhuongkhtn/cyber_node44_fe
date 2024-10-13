@@ -10,6 +10,7 @@ import ReactFacebookLogin from "react-facebook-login";
 const Login = () => {
   const [channelDetail, setChannelDetail] = useState();
   const [videos, setVideos] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Thêm trạng thái để theo dõi đăng nhập
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -39,17 +40,18 @@ const Login = () => {
                 .then((result) => {
                   // result gồm message và data (access token)
                   // tạo pop up thông báo login thành công
-                  toast.success(result.message);
+                  console.log("get result: ", result)
+                  toast.success(result.data.message);
 
                   // lưu access token trong local storage của browser
                   localStorage.setItem("LOGIN_USER", result.data);
 
                   // chuyển hướng sang trang chủ sau khi login thành công
-                  navigate("/");
+                  navigate("/verify-2fa")
                 })
                 .catch((error) => {
-                  console.log("error from API login");
-                  toast.error(error.response.data.message);
+                  console.log("error from API login: ", error);
+                  toast.error(error.message);
                 })
             }}
           >Login</button>

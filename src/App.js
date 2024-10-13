@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ForgotPass from "./components/ForgotPass";
+import Verify2FA from "./components/Verify2FA";
 
 const App = () => (
   <>
@@ -27,6 +28,7 @@ const App = () => (
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/forgot-pass' element={<ForgotPass />} />
+        <Route path='/verify-2fa' element={<Verify2FA />} />
         <Route path='/search/:searchTerm' element={<SearchFeed />} />
       </Routes>
       <Footer />

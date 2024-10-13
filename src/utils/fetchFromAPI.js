@@ -62,6 +62,7 @@ axiosInstance.interceptors.response.use(
         console.log('Extend token failed', error);
       }
     }
+    return error;
   } // param function khi response API trả về khác 2xx
 )
 
@@ -102,11 +103,13 @@ export const loginAPI = async (payload) => {
 }
 
 export const loginAsyncKeyAPI = async (payload) => {
-  console.log("get payload: ", payload)
-  const {data} = await axiosInstance.post(`${BASE_URL}/auth/login-async-key`, payload, {
+  const result = await axiosInstance.post(`${BASE_URL}/auth/login-async-key`, payload, {
     withCredentials: true //cho phép gửi và nhận cookie từ server (BE)
   });
-  return data;
+  if (result.response){
+    throw new Error(result.response?.data?.message || "API responded with an error");
+  }
+  return result;
 }
 
 export const loginFacebookAPI = async (newUser) => {
@@ -118,3 +121,8 @@ export const forgotPassAPI = async (email) => {
   const {data} = await axiosInstance.post(`${BASE_URL}/auth/forgot-password`, email);
   return data;
 }
+
+export const verify2FAAPI = async ({ code }) => {
+  const {data} = axiosInstance.post(`${BASE_URL}/auth/verify-2fa`, { code }, options);
+  return {data};
+};
