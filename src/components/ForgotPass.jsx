@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { forgotPassAPI } from '../utils/fetchFromAPI';
+import { changePassAPI, forgotPassAPI } from '../utils/fetchFromAPI';
 
 export default function ForgotPass() {
     const [step, setStep] = useState(0);
@@ -55,7 +55,15 @@ export default function ForgotPass() {
 
                         onClick={() => {
                             let code = document.querySelector("#code").value;
-                            navigate("/login")
+                            let newPass = document.getElementById("pass").value;
+                            changePassAPI({code, email, newPass})
+                            .then((result) => {
+                                toast.success(result.message);
+                                navigate("/login")
+                            })
+                            .catch(() => {
+                                toast.error("Change password failed");
+                            })
                         }}
                     >Next</button>
 

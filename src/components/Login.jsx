@@ -37,6 +37,7 @@ const Login = () => {
               console.log(`email: ${email}; pass_word: ${pass_word}`);
               loginAsyncKeyAPI({ email, pass_word })
                 .then((result) => {
+                  console.log("get result API login: ", result);
                   // result gồm message và data (access token)
                   // tạo pop up thông báo login thành công
                   toast.success(result.message);
@@ -48,7 +49,7 @@ const Login = () => {
                   navigate("/");
                 })
                 .catch((error) => {
-                  console.log("error from API login");
+                  console.log("error from API login", error);
                   toast.error(error.response.data.message);
                 })
             }}

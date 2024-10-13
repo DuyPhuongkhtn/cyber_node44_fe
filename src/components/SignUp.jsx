@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, CardMedia } from "@mui/material";
-
+import QRCode from 'qrcode';
 import { Videos, ChannelCard } from ".";
 import { registerAPI } from "../utils/fetchFromAPI";
 import { toast } from "react-toastify";
@@ -9,21 +9,37 @@ import { toast } from "react-toastify";
 const SignUp = () => {
   const [channelDetail, setChannelDetail] = useState();
   const [videos, setVideos] = useState(null);
+  const [isQrScanned, setIsQrScanned] = useState(false) // kiểm tra user đã quét mã QR chưa
+  const [qrCode, setQrCode] = useState(null);
   const { id } = useParams();
   useEffect(() => { }, []);
   const navigate = useNavigate();
+  const handleQrScanConfirmation = () => {
+    setIsQrScanned(true);
+    navigate("/login")
+  }
+  
   const handleRegister = () => {
     const fullName = document.querySelector("#fullName").value;
     const email = document.querySelector("#email").value;
     const pass = document.querySelector("#pass").value;
     const payload = { fullName, email, pass };
     registerAPI(payload)
-      .then((data) => {
-        console.log(data);
+      .then((result) => {
+        console.log(result);
+        const secret = result.data.secret;
+        // tạo mã QR code
+        const otpauth = `otpauth://totp/${email}?secret=${secret}&issuer=node44`;
+        QRCode.toDataURL(otpauth)
+        .then((qrCodeUrl)=>{
+          setQrCode(qrCodeUrl);
+          toast.success(result.message);
+        })
+        .catch()
         // thông báo
-        toast.success(data.message);
-        // chuyển trang sang login
-        navigate("/login");
+        // toast.success(result.message);
+        // // chuyển trang sang login
+        // navigate("/login");
       })
       .catch((error) => {
         console.log(error);
@@ -66,6 +82,20 @@ const SignUp = () => {
           </div>
         </form>
       </div>
+       {/* Hiển thị mã QR nếu có */}
+       {qrCode && (
+        <div className="text-center mt-4">
+          <h4>Scan the QR Code with Google Authenticator</h4>
+          <img src={qrCode} alt="QR Code" />
+          <button
+            onClick={handleQrScanConfirmation}
+            type="button"
+            className="btn btn-success mt-3"
+          >
+            I've Scanned the QR Code
+          </button>
+        </div>
+      )}
     </div>
   );
 };
